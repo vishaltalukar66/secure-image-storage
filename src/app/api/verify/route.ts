@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
             // Query the database to find the user by the decoded username
             const resFromDb = await User.findOne({
-                username: decodedJwt.message?.username
+                username: decodedJwt.message!.username
             });
 
             // Check if the user is not verified and the token matches
