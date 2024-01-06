@@ -1,0 +1,25 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "max-lines": [
+      "error",
+      {
+        "max": 300
+      }
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 2,
+        "maxEOF": 1,
+        "maxBOF": 0
+      }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "react/prop-types": "off"
+  }
+}
