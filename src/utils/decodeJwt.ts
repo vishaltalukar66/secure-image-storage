@@ -3,9 +3,9 @@ const { jwtVerify } = require('jose');
 export default async function decodeJwt(token: string) {
     try {
         // Verify the JWT token using jwtVerify function
+        const pass = await new TextEncoder().encode(`${process.env.SECRECT}`);
         const { payload, protectedHeader } = await jwtVerify(
-            token, // The JWT token to be verified
-            new TextEncoder().encode(`${process.env.SECRECT}`) // Encode the secret using TextEncoder
+            token, pass
         );
 
         // If verification is successful, return the decoded payload and indicate success
