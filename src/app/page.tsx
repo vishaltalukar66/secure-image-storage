@@ -1,9 +1,8 @@
+import mongo from "../assets/mongo.png";
+import next from "../assets/next.png";
 
-import mongo from "../assets/mongo.png"
-import next from "../assets/next.png"
-
-import Link from 'next/link'
-import Image from "next/image"
+import Link from 'next/link';
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -40,5 +39,5 @@ export default function Home() {
       </div >
 
     </>
-  )
+  );
 }
