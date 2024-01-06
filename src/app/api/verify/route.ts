@@ -7,8 +7,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
 
     try {
-        // Extract token from the query parameters in the URL
-        const token = req.nextUrl.searchParams.get('token') as string;
+        // Destructure the 'password' and 'token' from the JSON request body
+        const { token } = await req.json() as { token: string };
 
         // Decode the JWT token to get the information
         const decodedJwt = await decodeJwt(token) as { message?: { username: string }; success: boolean };
@@ -28,25 +28,25 @@ export async function GET(req: NextRequest) {
                 await User.findOneAndUpdate({ username: resFromDb.username }, { isVerified: true });
 
                 // Verification success, redirect to the login page
-                return NextResponse.redirect(new URL('/login', req.url));
+                return NextResponse.json({ message: "Verified" }, { status: 200 });
             } else if (resFromDb.verifyToken !== token) {
                 // User token doesn't match
-                return NextResponse.json({ message: "Invaild token, please check" });
+                return NextResponse.json({ message: "Invaild token, please check" }, { status: 400 });
 
             }
             else {
                 // User alredy verified
-                return NextResponse.json({ message: "Already verified, try again later" });
+                return NextResponse.json({ message: "Already verified, try again later" }, { status: 400 });
 
             }
         } else {
             // Decoding JWT was not successful
-            return NextResponse.json({ message: "Unable to verify, try again later" });
+            return NextResponse.json({ message: "Unable to verify, try again later" }, { status: 400 });
         }
     } catch (error) {
         // Handle any errors that might occur during the process
         console.log(error);
-        return NextResponse.json({ message: "Unable to verify, try again later" });
+        return NextResponse.json({ message: "Unable to verify, try again later" }, { status: 400 });
     }
 
 }
