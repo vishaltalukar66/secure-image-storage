@@ -1,5 +1,7 @@
 // pages/api/verify.ts
 import User from '@/model/userModel';
+import { connect } from '@/dbConfig/dbCon';
+
 import decodeJwt from '@/utils/decodeJwt';
 import { NextRequest, NextResponse } from 'next/server';
 
