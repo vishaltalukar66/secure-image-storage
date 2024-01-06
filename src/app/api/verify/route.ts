@@ -4,7 +4,7 @@ import decodeJwt from '@/utils/decodeJwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
 
     try {
         // Destructure the 'password' and 'token' from the JSON request body
