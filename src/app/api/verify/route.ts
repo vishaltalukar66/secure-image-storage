@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
 
     try {
+        // Connect to the database
+        await connect();
         // Destructure the 'password' and 'token' from the JSON request body
         const { token } = await req.json() as { token: string };
 
