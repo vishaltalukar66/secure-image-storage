@@ -21,11 +21,13 @@ export async function POST(req: NextRequest) {
             const resFromDb = await User.findOne({
                 username: decodedJwt.message!.username
             });
+            console.log(resFromDb);
 
             // Check if the user is not verified and the token matches
             if (!resFromDb.isVerified && resFromDb.verifyToken === token) {
                 // Update the database to mark the user as verified
                 await User.findOneAndUpdate({ username: resFromDb.username }, { isVerified: true });
+                console.log('success return');
 
                 // Verification success, redirect to the login page
                 return NextResponse.json({ message: "Verified" }, { status: 200 });
