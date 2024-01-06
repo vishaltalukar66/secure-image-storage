@@ -31,9 +31,11 @@ export async function POST(req: NextRequest) {
                 id: resFromDb._id,
                 username: resFromDb.username
             };
+            const expiration = Math.floor(Date.now() / 1000) + 24 * 60 * 60; // 1 day in seconds
 
             // Sign the JWT token with the secret and set expiration to 1 day
-            const jwtPayload = await jwt.sign(jwtData, `${process.env.SECRECT}`, { expiresIn: "1d" });
+            const jwtPayload = await jwt.sign(jwtData, `${process.env.SECRECT}`,
+                { expiresIn: expiration });
 
             // Update the user's forgot password token in the database
             await User.findOneAndUpdate({ username: resFromDb.username }, { forgotPasswordToken: jwtPayload });

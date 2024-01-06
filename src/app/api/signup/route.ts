@@ -27,9 +27,10 @@ export async function POST(req: NextRequest) {
         // Generate a salt and hash the user's password
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(reqBody.password, salt);
+        const expiration = Math.floor(Date.now() / 1000) + 24 * 60 * 60; // 1 day in seconds
 
         // Create a verification token using the user's username
-        const token = await jwt.sign({ username: reqBody.username }, `${process.env.SECRECT}`, { expiresIn: "1d" });
+        const token = await jwt.sign({ username: reqBody.username }, `${process.env.SECRECT}`, { expiresIn: expiration });
 
         // Create a new user instance with the provided details
         const newuser = new User({

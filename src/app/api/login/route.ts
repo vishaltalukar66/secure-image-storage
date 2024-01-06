@@ -31,8 +31,12 @@ export async function POST(req: NextRequest) {
                 id: resFromDb._id,
                 username: resFromDb.username
             };
+            const expiration = Math.floor(Date.now() / 1000) + 24 * 60 * 60; // 1 day in seconds
 
-            const jwtPayload = await jwt.sign(jwtData, `${process.env.SECRECT}`, { expiresIn: "1h" });
+            // Create a verification token using the user's username
+
+            const jwtPayload = await jwt.sign(jwtData, `${process.env.SECRECT}`,
+                { expiresIn: expiration });
 
             // Prepare the response with a success message and set the token as an HTTP-only cookie
             const response = NextResponse.json({ message: 'Successfully Logged In', success: true }, { status: 200 });
