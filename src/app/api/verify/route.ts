@@ -34,25 +34,25 @@ export async function POST(req: NextRequest) {
                 console.log('success return');
 
                 // Verification success, redirect to the login page
-                return NextResponse.json({ message: "Verified" }, { status: 200 });
+                return NextResponse.json({ message: "Verified", success: true }, { status: 200 });
             } else if (resFromDb.verifyToken !== token) {
                 // User token doesn't match
-                return NextResponse.json({ message: "Invaild token, please check" }, { status: 400 });
+                return NextResponse.json({ message: "Invaild token, please check", success: false }, { status: 400 });
 
             }
             else {
                 // User alredy verified
-                return NextResponse.json({ message: "Already verified, try again later" }, { status: 400 });
+                return NextResponse.json({ message: "Already verified, try again later", success: false }, { status: 400 });
 
             }
         } else {
             // Decoding JWT was not successful
-            return NextResponse.json({ message: "Unable to verify, try again later" }, { status: 400 });
+            return NextResponse.json({ message: "Unable to verify, try again later", success: false }, { status: 400 });
         }
     } catch (error) {
         // Handle any errors that might occur during the process
         console.log(error);
-        return NextResponse.json({ message: "Unable to verify, try again later" }, { status: 400 });
+        return NextResponse.json({ message: "Unable to verify, try again later", success: false }, { status: 400 });
     }
 
 }
