@@ -1,21 +1,30 @@
 "use client";
 
+import UploadImages from "@/components/UploadImages";
+import ViewImages from "@/components/ViewImages";
 import returnType from "@/types/returntype";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
+
+// Define the interface for the data received from the server
+interface dataInterface {
+    message: {
+        id: string;
+        username: string;
+        iat: number;
+        exp: number;
+    };
+    success: boolean;
+}
+
 export default function ProfilePage() {
+
+    const [displayImage, setDisplayImage] = useState(false);
+    const [displayUpload, setDisplayUpload] = useState(false);
     const router = useRouter();
-    interface dataInterface {
-        message: {
-            id: string;
-            username: string;
-            iat: number;
-            exp: number;
-        };
-        success: boolean;
-    }
+
     const [data, setData] = useState<dataInterface>({
         message: {
             id: "string",
@@ -26,6 +35,21 @@ export default function ProfilePage() {
         "success": true,
     },
     );
+    // Toggle the display of images
+
+    function handleViewImages() {
+        setDisplayImage(!displayImage);
+        setDisplayUpload(false);
+
+
+    }
+    // Toggle the display of upload
+
+    function handleViewUpload() {
+        setDisplayUpload(!displayUpload);
+        setDisplayImage(false);
+
+    }
     async function handleLogout() {
         try {
             const responseFromServer = await fetch('/api/logout', {
@@ -54,6 +78,8 @@ export default function ProfilePage() {
             toast.error("Unable to connect to server");
         }
     }
+
+    // Fetch user data from the server on component mount
     useEffect(() => {
         const fetchData = async () => {
             const responseFromServer = await fetch('/api/decodeToken', {
@@ -88,6 +114,28 @@ export default function ProfilePage() {
                         <p className="text-lg">
                             <span className="font-semibold">User ID:</span> {data.message.id}
                         </p>
+                        <div>
+                            <button
+                                onClick={handleViewImages}
+                                className="mt-4 bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-300 focus:outline-none focus:ring focus:border-blue-300"
+                            >
+                                View Images
+                            </button>
+
+                            <button
+                                onClick={handleViewUpload}
+                                className="md:ml-3 mt-4 bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-300 focus:outline-none focus:ring focus:border-blue-300"
+                            >
+                                Upload Images
+                            </button>
+                        </div>
+                        {/* Conditionally render ViewImages component if displayImage is true, otherwise render an empty fragment */}
+                        {displayImage ? (<ViewImages username={`${data.message.username}`} />) : (<></>)}
+
+                        {/* Conditionally render UploadImages component if displayUpload is true, otherwise render an empty fragment */}
+                        {displayUpload ? (<UploadImages username={`${data.message.username}`} />) : (<></>)}
+
+
                         <button
                             onClick={handleLogout}
                             className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300"
@@ -96,6 +144,8 @@ export default function ProfilePage() {
                         </button>
                     </div>
                 </div>
+
+
             </div>
         </>
     );

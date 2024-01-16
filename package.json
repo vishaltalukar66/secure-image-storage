@@ -1,7 +1,8 @@
 {
-  "name": "testing_nextjs",
+  "name": "upload-image-to-aws",
   "version": "0.1.0",
   "private": true,
+  "author": "Vishal Talukar",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,11 +10,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.490.0",
+    "@aws-sdk/s3-request-presigner": "^3.490.0",
+    "ask-sdk": "^2.14.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "jose": "^5.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
+    "nanoid": "^5.0.4",
     "next": "14.0.4",
     "nodemailer": "^6.9.8",
     "react": "^18",

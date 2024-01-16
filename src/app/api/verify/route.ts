@@ -19,19 +19,19 @@ export async function POST(req: NextRequest) {
 
         // Check if decoding was successful
         if (decodedJwt.success) {
-            console.log(decodedJwt);
+            // console.log(decodedJwt);
 
             // Query the database to find the user by the decoded username
             const resFromDb = await User.findOne({
                 username: decodedJwt.message!.username
             });
-            console.log(resFromDb);
+            // console.log(resFromDb);
 
             // Check if the user is not verified and the token matches
             if (!resFromDb.isVerified && resFromDb.verifyToken === token) {
                 // Update the database to mark the user as verified
                 await User.findOneAndUpdate({ username: resFromDb.username }, { isVerified: true });
-                console.log('success return');
+                // console.log('success return');
 
                 // Verification success, redirect to the login page
                 return NextResponse.json({ message: "Verified", success: true }, { status: 200 });
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         }
     } catch (error) {
         // Handle any errors that might occur during the process
-        console.log(error);
+        // console.log(error);
         return NextResponse.json({ message: "Unable to verify, try again later", success: false }, { status: 400 });
     }
 

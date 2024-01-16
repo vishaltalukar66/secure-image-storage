@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import returnType from "@/types/returntype";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,10 +17,13 @@ export default function SignUp() {
     });
 
     const [check, setCheck] = useState(true);
+    const [isLoad, setIsLoad] = useState(false);
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         try {
+            setIsLoad(!isLoad);
+
             const responseFromServer = await fetch('/api/signup', {
                 method: 'POST',
                 credentials: 'include',
@@ -35,15 +39,21 @@ export default function SignUp() {
 
             if (responseFromServer.success) {
                 //reload will tigger authentication()
+                setIsLoad(!isLoad);
+
                 router.push('/login');
             }
             else {
                 toast.error(responseFromServer.message);
+                setIsLoad(!isLoad);
+
             }
         } catch (error) {
+            setIsLoad(!isLoad);
+
             toast.error("Unable to connect to server");
         }
-        // throw new Error("Function not implemented.");
+
     }
 
 
@@ -60,6 +70,7 @@ export default function SignUp() {
 
         <>
             <Toaster />
+            {isLoad ? (<Loading />) : (<></>)}
 
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 to-purple-300">
                 <div className="bg-white p-8 shadow-md rounded-md max-w-md w-full">

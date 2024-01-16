@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
             // Call the email sender function to send the reset link
             const callEmailSender = await sendEmail(resFromDb.username, 'reset', jwtPayload);
-            console.log(callEmailSender);
+            // console.log(callEmailSender);
 
             // Check if the email sending was successful
             if (callEmailSender.success) {
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
         }
     } catch (error) {
         // Handle errors that may occur during the process and return a JSON response
-        console.log(error);
+        // console.log(error);
         return NextResponse.json({ message: 'Some error, contact admin', success: false }, { status: 400 });
     }
 

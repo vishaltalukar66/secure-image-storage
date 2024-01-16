@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import returnType from "@/types/returntype";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,9 +14,14 @@ export default function Login() {
         password: "",
     });
 
+    const [isLoad, setIsLoad] = useState(false);
+
+
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         try {
+            setIsLoad(!isLoad);
+
             const responseFromServer = await fetch('/api/login', {
                 method: 'POST',
                 credentials: 'include',
@@ -33,12 +39,18 @@ export default function Login() {
                 //reload will tigger authentication()
                 toast.success(responseFromServer.message);
                 router.push('/profile');
+                setIsLoad(!isLoad);
+
             }
             else {
                 toast.error(responseFromServer.message);
+                setIsLoad(!isLoad);
+
             }
         } catch (error) {
             toast.error("Unable to connect to server");
+            setIsLoad(!isLoad);
+
         }
     }
 
@@ -46,6 +58,7 @@ export default function Login() {
 
         <>
             <Toaster />
+            {isLoad ? (<Loading />) : (<></>)}
 
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 to-purple-300">
                 <div className="bg-white p-8 shadow-md rounded-md max-w-md w-full">

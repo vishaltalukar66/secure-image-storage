@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
         // If the token is valid, redirect to the profile page
         const decodedJwt = await decodeJwt(token) as { message?: object; success: boolean };
         if (decodedJwt.success) {
-            console.log(decodedJwt);
+            // console.log(decodedJwt);
             return NextResponse.redirect(new URL('/profile', request.url));
         } else {
             // If the token is invalid, redirect to the login page

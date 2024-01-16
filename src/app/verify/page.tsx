@@ -31,7 +31,7 @@ const VerifyEmailPage = () => {
                 toast.error(responseFromServer.message);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("Unable to connect to server");
         }
     }
